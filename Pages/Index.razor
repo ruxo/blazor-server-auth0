@@ -1,0 +1,33 @@
+﻿@page "/"
+@using System.Security.Claims
+@inject AuthenticationStateProvider AuthState
+
+@if (user.Identity!.IsAuthenticated) {
+   <h1>Hello @user.Identity.Name</h1>
+   <div><a href="/logout">Logout</a></div>
+}
+else {
+   <h1>Hello guest</h1>
+   <p>Please login</p>
+   <div>
+      <a href="/login">Login</a>
+   </div>
+}
+
+<footer>
+   This is a simplified version of 
+   <a href="https://auth0.com/blog/what-is-blazor-tutorial-on-building-webapp-with-authentication/#Securing-the-Application-with-Auth0">
+      Auth0 with Blazor Guideline
+   </a>.
+</footer>
+
+@code {
+
+   ClaimsPrincipal user = new (new ClaimsIdentity());
+
+   protected override async Task OnInitializedAsync() {
+      var authState = await AuthState.GetAuthenticationStateAsync();
+      user = authState.User;
+   }
+
+}
