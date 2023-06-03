@@ -5,6 +5,30 @@
 @if (user.Identity!.IsAuthenticated) {
    <h1>Hello @user.Identity.Name</h1>
    <div><a href="/logout">Logout</a></div>
+   <table>
+      <tr><th>Type</th><th>Value</th><th>Value Type</th><th>Props count</th></tr>
+      @foreach (var claim in user.Claims) {
+         <tr>
+            <td>
+               <div>@claim.Type</div>
+               <div style="color: silver; font-size: .6em">@claim.ValueType</div>
+            </td>
+            <td><pre>@claim.Value</pre></td>
+            <td>
+               @if (claim.Properties.Count > 0) {
+               <table style="border: 1px solid black">
+                  @foreach (var k in claim.Properties.Keys) {
+                     <tr><td>@k</td><td>@claim.Properties[k]</td></tr>
+                  }
+               </table>
+               }
+               else {
+                 <span>&nbsp;</span>
+               }
+            </td>
+         </tr>
+      }
+   </table>
 }
 else {
    <h1>Hello guest</h1>
