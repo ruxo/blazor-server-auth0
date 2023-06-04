@@ -8,7 +8,15 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddAuth0WebAppAuthentication(opts => {
     opts.Domain = builder.Configuration["Auth0:Domain"]!;
     opts.ClientId = builder.Configuration["Auth0:ClientId"]!;
-});
+    opts.ClientSecret = builder.Configuration["Auth0:ClientSecret"];
+})
+       .WithAccessToken(opts => {
+            // More information see. https://auth0.com/blog/exploring-auth0-aspnet-core-authentication-sdk/#Get-an-Access-Token
+            opts.Audience = builder.Configuration["Auth0:Audience"];
+            // opts.UseRefreshTokens = true; // uncomment if you need it
+        });
+
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

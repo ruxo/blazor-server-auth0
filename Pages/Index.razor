@@ -1,5 +1,7 @@
 ﻿@page "/"
 @using System.Security.Claims
+@using Microsoft.AspNetCore.Authentication
+@inject IHttpContextAccessor HttpContextAccessor
 @inject AuthenticationStateProvider AuthState
 
 <AuthorizeView>
@@ -30,6 +32,16 @@
             </tr>
          }
       </table>
+      @if (accessToken is not null) {
+         <hr/>
+         <h1>Access Token</h1>
+         <pre style="white-space: pre-wrap; word-wrap: break-word">@accessToken</pre>
+      }
+      @if (idToken is not null) {
+         <hr/>
+         <h1>ID Token</h1>
+         <pre style="white-space: pre-wrap; word-wrap: break-word">@idToken</pre>
+      }
    </Authorized>
    <NotAuthorized>
       <p>Please login</p>
@@ -49,10 +61,15 @@
 @code {
 
    ClaimsPrincipal user = new (new ClaimsIdentity());
+   string? accessToken;
+   string? idToken;
 
    protected override async Task OnInitializedAsync() {
       var authState = await AuthState.GetAuthenticationStateAsync();
       user = authState.User;
+
+      accessToken = await HttpContextAccessor.HttpContext!.GetTokenAsync("access_token");
+      idToken = await HttpContextAccessor.HttpContext!.GetTokenAsync("id_token");
    }
 
 }
