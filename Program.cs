@@ -1,8 +1,11 @@
 using Auth0.AspNetCore.Authentication;
+using Blazor.Example;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+
+builder.Services.AddScoped<JsInterop>();
 
 // important
 builder.Services.AddAuth0WebAppAuthentication(opts => {

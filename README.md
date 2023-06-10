@@ -27,9 +27,11 @@ document for guidance). Also, the authorization flow depends on server-to-server
 pages are required to serve that server communication. Consult `Login.cshtml` and `Logout.cshtml`
 for information on how to log in/out using Razor pages.
 
-*Note*: This mechanism has a drawback in that during server transfer from a Blazor page to a Razor page,
-the Blazor page may display "server disconnected" message. A method to mitigate this issue has not been
-found as of yet.
+## Prevent Blazor's reconnection message
+Since the authentication pages are Razor pages, a "reconnection" message from the Blazor
+framework may briefly appear during transitions from a Blazor page to these pages. This needs to be 
+manually managed. This example introduces a custom JS script, `blazor.example.js`, and a wrapper class,
+`JsInterop.cs`, to assist in the suppression process. Refer to the `Index.razor` page for usage.
 
 # Access Token
 In order to obtain the access token, Auth0 mandates the use of an API Audience. This means you need to set up
@@ -43,5 +45,7 @@ Given that the Auth0 library utilizes Razor pages for server-side processing, th
 either the `access_token` or `id_token`. Refer to `Index.razor` for an illustrative example.
 
 
-# See also
+# Additional Resources
+* [Auth0 with Blazor Server using OpenIdConnect library](https://github.com/ruxo/blazor-server-oidc-auth0)
 * [Auth0 (or any OIDC) with Blazor WASM standalone](https://github.com/ruxo/blazor-wasm-auth0)
+* [Auth0 with Blazor Hosted solution - Abridge version](https://github.com/ruxo/blazor-hosted-auth0)
